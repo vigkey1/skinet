@@ -26,7 +26,8 @@ namespace API_Anjular.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await _ProductRepo.GetProductsAsync();
+            var products = await _ProductRepo
+                .GetProductsAsync();
 
             return Ok(products);
         }
@@ -36,6 +37,19 @@ namespace API_Anjular.Controllers
         {
             return await _ProductRepo.GetProductsByIdAsync(id);
 
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            return Ok(await _ProductRepo.GetProductBrandsAsync());
+
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+            return Ok(await _ProductRepo.GetProductTypesAsync());
 
         }
 
