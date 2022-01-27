@@ -1,3 +1,4 @@
+using API_Anjular.Helper;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,9 @@ namespace API_Anjular
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
+
             services.AddControllers();
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
@@ -52,6 +56,7 @@ namespace API_Anjular
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
