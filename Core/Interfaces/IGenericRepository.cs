@@ -18,5 +18,7 @@ namespace Core.Interfaces
 
         Task<IReadOnlyList<T>> ListWithSpec(Ispecification<T> spec);
 
+        Task<int> CountAysnc(Ispecification<T> spec);
+
     }
 }

@@ -38,8 +38,8 @@ namespace API_Anjular.MiddleWare
                 var response = _ent.IsDevelopment()
                     ? new APIException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
                     : new APIException((int)HttpStatusCode.InternalServerError);
-               
-                var option = new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase  }
+
+                var option = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(response,option);
                 await context.Response.WriteAsync(json);
                       

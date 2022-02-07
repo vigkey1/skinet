@@ -1,5 +1,6 @@
 ﻿
 using API_Anjular.DTOs;
+using API_Anjular.Helper;
 using AutoMapper;
 using Core.Entity;
 using Core.Interfaces;
@@ -32,11 +33,14 @@ namespace API_Anjular.Controllers
 
       
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductToReturnDTO>>> GetProducts([FromQuery]ProductSpecPrams productFilter )
         {
-            var spec = new ProductsWithTypeAndBrands();
+            var spec = new ProductsWithTypeAndBrands(productFilter);
+            var countSpec = new ProductWithFiltersForCountSpecification(productFilter);
+            var totalItem = await _productRepo.CountAysnc(countSpec);
             var products =   await _productRepo.ListWithSpec(spec);
-            return Ok(_mapper.Map<IReadOnlyList<Product>,IReadOnlyList<ProductToReturnDTO>>(products));
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products);
+            return Ok(new Pagination<ProductToReturnDTO>(productFilter.PageIndex,productFilter.PageSize, totalItem, data));
         }
 
         [HttpGet("{id}")]
